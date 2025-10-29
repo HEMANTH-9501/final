@@ -12,6 +12,13 @@ async function enableMocking() {
     onUnhandledRequest: "bypass",
     serviceWorker: { url: "/mockServiceWorker.js" },
   })
+
+  try {
+    const { seedDatabase } = await import("./mocks/seed.ts")
+    await seedDatabase()
+  } catch (e) {
+    console.error("Seeding failed:", e)
+  }
 }
 
 enableMocking().finally(() => {
